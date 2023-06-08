@@ -1,0 +1,519 @@
+?- compareBosVenantAll('venant').
+--- venant-1:A girl likes herself
+(l/like-01
+    :ARG0 (x/girl)
+    :ARG1 x)
+OK
+--- venant-2:There is a girl who likes herself.
+(x/girl 
+    :ARG0-of (l/like-01 ; a/like-01 in the paper
+        :ARG1 x))
+KO
+Bos semantics:
+∃x(girl(x)
+   ∧ ∃l(like-01(l)
+        ∧ :ARG1(l,x)
+        ∧ :ARG0(l,x)))
+--
+Venant semantics
+∃x(girl(x)
+   ∧ ∃l(like-01(l)
+        ∧ :ARG1(l,x)
+          ∧ :ARG0(l,x)))
+--- venant-AMR-1:The lawyer is the man
+(l/lawyer :domain (m/man))
+KO
+Bos semantics:
+∃l(lawyer(l)
+   ∧ ∃m(man(m)
+        ∧ :domain(l,m)))
+--
+Venant semantics
+∃m(man(m)
+   ∧ ∃l(lawyer(l)
+        ∧ :domain(l,m)))
+--- venant-AMR-2:The lawer is the man who sings
+(l/lawyer 
+    :domain (m/man 
+        :ARG0-of (s/sing-01)))
+KO
+Bos semantics:
+∃l(lawyer(l)
+   ∧ ∃m(man(m)
+        ∧ ∃s(sing-01(s)
+             ∧ :ARG0(s,m))
+        ∧ :domain(l,m)))
+--
+Venant semantics
+∃m(man(m)
+   ∧ ∃s(sing-01(s)
+        ∧ :ARG0(s,m)
+          ∧ ∃l(lawyer(l)
+               ∧ :domain(l,m))))
+--- venant-AMR-3:A lawyer sings
+(s/sing-01
+    :ARG0 (l/lawyer))
+KO
+Bos semantics:
+∃s(sing-01(s)
+   ∧ ∃l(lawyer(l)
+        ∧ :ARG0(s,l)))
+--
+Venant semantics
+∃l(lawyer(l)
+   ∧ ∃s(sing-01(s)
+        ∧ :ARG0(s,l)))
+--- venant-AMR-4:The boy works hard
+(w/work-01 
+    :ARG0 (b/boy)
+    :manner (h/hard-02))
+KO
+Bos semantics:
+∃w(work-01(w)
+   ∧ ∃b(boy(b)
+        ∧ :ARG0(w,b))
+     ∧ ∃h(hard-02(h)
+          ∧ :manner(w,h)))
+--
+Venant semantics
+∃h(hard-02(h)
+   ∧ ∃b(boy(b)
+        ∧ ∃w(work-01(w)
+             ∧ :ARG0(w,b)
+               ∧ :manner(w,h))))
+--- venant-AMR-5:the person is Iftikhar Ahmed who is the official in the ministry about the interior of Pakistan
+(p2 / person
+      :domain (p / person :wiki "Iftikhar_Ahmed"
+            :name (n2 / name :op1 "Iftikhar" :op2 "Ahmed"))
+      :ARG0-of (h / have-org-role-91
+            :ARG1 (m / ministry
+                  :topic (i / interior)
+                  :poss (c / country :wiki "Pakistan"
+                        :name (n / name :op1 "Pakistan")))
+            :ARG2 (o / official)))
+KO
+Bos semantics:
+∃p2(person(p2)
+    ∧ ∃p(person(p)
+         ∧ :wiki(p,"Iftikhar_Ahmed")
+           ∧ ∃n2(name(n2)
+                 ∧ :op1(n2,"Iftikhar")
+                   ∧ :op2(n2,"Ahmed")
+                 ∧ :name(p,n2))
+         ∧ :domain(p2,p))
+      ∧ ∃h(have-org-role-91(h)
+           ∧ ∃m(ministry(m)
+                ∧ ∃i(interior(i)
+                     ∧ :topic(m,i))
+                  ∧ ∃c(country(c)
+                       ∧ :wiki(c,"Pakistan")
+                         ∧ ∃n(name(n)
+                              ∧ :op1(n,"Pakistan")
+                              ∧ :name(c,n))
+                       ∧ :poss(m,c))
+                ∧ :ARG1(h,m))
+             ∧ ∃o(official(o)
+                  ∧ :ARG2(h,o))
+           ∧ :ARG0(h,p2)))
+--
+Venant semantics
+∃n2(name(n2)
+    ∧ :op1(n2,"Iftikhar")
+      ∧ :op2(n2,"Ahmed")
+        ∧ ∃p(person(p)
+             ∧ :wiki(p,"Iftikhar_Ahmed")
+               ∧ :name(p,n2)
+                 ∧ ∃p2(person(p2)
+                       ∧ :domain(p2,p)
+                         ∧ ∃o(official(o)
+                              ∧ ∃n(name(n)
+                                   ∧ :op1(n,"Pakistan")
+                                     ∧ ∃c(country(c)
+                                          ∧ :wiki(c,"Pakistan")
+                                            ∧ :name(c,n)
+                                              ∧ ∃i(interior(i)
+                                                   ∧ ∃m(ministry(m)
+                                                        ∧ :topic(m,i)
+                                                          ∧ :poss(m,c)
+                                                            ∧ ∃h(have-org-role-91(h)
+                                                                 ∧ :ARG1(h,m)
+                                                                   ∧ :ARG2(h,o)
+                                                                     ∧ :ARG0(h,p2))))))))))
+--- venant-AMR-6:The man who sings works
+(w/work-01
+    :ARG0 (m/man 
+        :ARG0-of (s/sing-01)))
+KO
+Bos semantics:
+∃w(work-01(w)
+   ∧ ∃m(man(m)
+        ∧ ∃s(sing-01(s)
+             ∧ :ARG0(s,m))
+        ∧ :ARG0(w,m)))
+--
+Venant semantics
+∃m(man(m)
+   ∧ ∃s(sing-01(s)
+        ∧ :ARG0(s,m)
+          ∧ ∃w(work-01(w)
+               ∧ :ARG0(w,m))))
+--- venant-AMR-7:The woorker sings
+(w/sing-01
+    :ARG0 (p/person
+        :ARG0-of (s/work-01)))
+KO
+Bos semantics:
+∃w(sing-01(w)
+   ∧ ∃p(person(p)
+        ∧ ∃s(work-01(s)
+             ∧ :ARG0(s,p))
+        ∧ :ARG0(w,p)))
+--
+Venant semantics
+∃p(person(p)
+   ∧ ∃s(work-01(s)
+        ∧ :ARG0(s,p)
+          ∧ ∃w(sing-01(w)
+               ∧ :ARG0(w,p))))
+--- venant-s4:I believe the president is Ron Paul.
+(b/believe-01
+    :ARG0 (i/I)
+    :ARG1 (p / president
+        :domain (p1 / person
+            :wiki "Ron_Paul"
+            :name (n / name
+                :op1 "Ron"
+                :op2 "Paul"))))
+KO
+Bos semantics:
+∃b(believe-01(b)
+   ∧ ∃i(I(i)
+        ∧ :ARG0(b,i))
+     ∧ ∃p(president(p)
+          ∧ ∃p1(person(p1)
+                ∧ :wiki(p1,"Ron_Paul")
+                  ∧ ∃n(name(n)
+                       ∧ :op1(n,"Ron")
+                         ∧ :op2(n,"Paul")
+                       ∧ :name(p1,n))
+                ∧ :domain(p,p1))
+          ∧ :ARG1(b,p)))
+--
+Venant semantics
+∃n(name(n)
+   ∧ :op1(n,"Ron")
+     ∧ :op2(n,"Paul")
+       ∧ ∃p1(person(p1)
+             ∧ :wiki(p1,"Ron_Paul")
+               ∧ :name(p1,n)
+                 ∧ ∃p(president(p)
+                      ∧ :domain(p,p1)
+                        ∧ ∃i(I(i)
+                             ∧ ∃b(believe-01(b)
+                                  ∧ :ARG0(b,i)
+                                    ∧ :ARG1(b,p))))))
+--- venant-s4-b:I believe the president person is Ron Paul.
+(b/believe-01
+    :ARG0 (i/I)
+    :ARG1 (p1/person
+        :mod (p/president) 
+        :domain (p2 / person
+            :wiki "Ron_Paul"
+            :name (n / name
+                :op1 "Ron"
+                :op2 "Paul"))))
+KO
+Bos semantics:
+∃b(believe-01(b)
+   ∧ ∃i(I(i)
+        ∧ :ARG0(b,i))
+     ∧ ∃p1(person(p1)
+           ∧ ∃p(president(p)
+                ∧ :mod(p1,p))
+             ∧ ∃p2(person(p2)
+                   ∧ :wiki(p2,"Ron_Paul")
+                     ∧ ∃n(name(n)
+                          ∧ :op1(n,"Ron")
+                            ∧ :op2(n,"Paul")
+                          ∧ :name(p2,n))
+                   ∧ :domain(p1,p2))
+           ∧ :ARG1(b,p1)))
+--
+Venant semantics
+∃n(name(n)
+   ∧ :op1(n,"Ron")
+     ∧ :op2(n,"Paul")
+       ∧ ∃p2(person(p2)
+             ∧ :wiki(p2,"Ron_Paul")
+               ∧ :name(p2,n)
+                 ∧ ∃p(president(p)
+                      ∧ ∃p1(person(p1)
+                            ∧ :mod(p1,p)
+                              ∧ :domain(p1,p2)
+                                ∧ ∃i(I(i)
+                                     ∧ ∃b(believe-01(b)
+                                          ∧ :ARG0(b,i)
+                                            ∧ :ARG1(b,p1)))))))
+--- venant-AMR-8:my brother
+(p/person
+    :ARG0-of (h/have-rel-role-91
+        :ARG1 (i/i)
+        :ARG2 (b/brother)))
+KO
+Bos semantics:
+∃p(person(p)
+   ∧ ∃h(have-rel-role-91(h)
+        ∧ ∃i(i(i)
+             ∧ :ARG1(h,i))
+          ∧ ∃b(brother(b)
+               ∧ :ARG2(h,b))
+        ∧ :ARG0(h,p)))
+--
+Venant semantics
+∃p(person(p)
+   ∧ ∃b(brother(b)
+        ∧ ∃i(i(i)
+             ∧ ∃h(have-rel-role-91(h)
+                  ∧ :ARG1(h,i)
+                    ∧ :ARG2(h,b)
+                      ∧ :ARG0(h,p)))))
+--- venant-AMR-9:my client
+(c/client :poss (w/we))
+KO
+Bos semantics:
+∃c(client(c)
+   ∧ ∃w(we(w)
+        ∧ :poss(c,w)))
+--
+Venant semantics
+∃w(we(w)
+   ∧ ∃c(client(c)
+        ∧ :poss(c,w)))
+--- venant-AMR-10:The therapist of his client thanks him.
+(t/thank-01
+       :ARG0 (t2/therapist
+           :poss (c/client
+               :poss t2))
+       :ARG1 c)
+KO
+Bos semantics:
+∃t2(therapist(t2)
+    ∧ :poss(t2,c)
+    ∧ ∃t(thank-01(t)
+         ∧ :ARG0(t,t2)
+           ∧ :ARG1(t,c)))
+--
+Venant semantics
+∃c(client(c)
+   ∧ :poss(c,t2)
+     ∧ ∃t2(therapist(t2)
+           ∧ :poss(t2,c)
+             ∧ ∃t(thank-01(t)
+                  ∧ :ARG0(t,t2)
+                    ∧ :ARG1(t,c))))
+--- venant-AMR-10-reified:The therapist who owns the client who owns him thanks him.
+(t/thank-01
+       :ARG0 (t2/therapist
+           :ARG0-of (o1/own-01
+               :ARG1 (c/client 
+                   :ARG0-of (o2/own-01
+                       :ARG1 t2))))
+       :ARG1 c)
+KO
+Bos semantics:
+∃t2(therapist(t2)
+    ∧ ∃o1(own-01(o1)
+          ∧ :ARG1(o1,c)
+          ∧ :ARG0(o1,t2))
+    ∧ ∃t(thank-01(t)
+         ∧ :ARG0(t,t2)
+           ∧ :ARG1(t,c)))
+--
+Venant semantics
+∃t2(therapist(t2)
+    ∧ ∃c(client(c)
+         ∧ ∃o2(own-01(o2)
+               ∧ :ARG1(o2,t2)
+                 ∧ :ARG0(o2,c)
+                   ∧ ∃o1(own-01(o1)
+                         ∧ :ARG1(o1,c)
+                           ∧ :ARG0(o1,t2)
+                             ∧ ∃t(thank-01(t)
+                                  ∧ :ARG0(t,t2)
+                                    ∧ :ARG1(t,c))))))
+--- venant-AMR-annex-1:the war if only Ron Paul does not become the president then
+(w / war-01
+      :condition (b / become-01 :polarity -
+            :ARG1 (p / person :wiki "Ron_Paul" :name (n / name :op1 "Ron" :op2 "Paul"))
+            :ARG2 (p2 / president)
+            :mod (o / only))
+      :time (t / then))
+KO
+Bos semantics:
+∃w(war-01(w)
+   ∧ ∃b(become-01(b)
+        ∧ :polarity(b,-)
+          ∧ ∃p(person(p)
+               ∧ :wiki(p,"Ron_Paul")
+                 ∧ ∃n(name(n)
+                      ∧ :op1(n,"Ron")
+                        ∧ :op2(n,"Paul")
+                      ∧ :name(p,n))
+               ∧ :ARG1(b,p))
+            ∧ ∃p2(president(p2)
+                  ∧ :ARG2(b,p2))
+              ∧ ∃o(only(o)
+                   ∧ :mod(b,o))
+        ∧ :condition(w,b))
+     ∧ ∃t(then(t)
+          ∧ :time(w,t)))
+--
+Venant semantics
+∃t(then(t)
+   ∧ ∃o(only(o)
+        ∧ ∃p2(president(p2)
+              ∧ ∃n(name(n)
+                   ∧ :op1(n,"Ron")
+                     ∧ :op2(n,"Paul")
+                       ∧ ∃p(person(p)
+                            ∧ :wiki(p,"Ron_Paul")
+                              ∧ :name(p,n)
+                                ∧ ∃b(become-01(b)
+                                     ∧ :polarity(b,-)
+                                       ∧ :ARG1(b,p)
+                                         ∧ :ARG2(b,p2)
+                                           ∧ :mod(b,o)
+                                             ∧ ∃w(war-01(w)
+                                                  ∧ :condition(w,b)
+                                                    ∧ :time(w,t))))))))
+--- venant-AMR-annex-2:to become the person who is the president needs something
+(a / and
+      :op2 (n / need-01
+            :ARG0 (b / become-01
+                  :ARG2 (p2 / person
+                        :ARG1-of (h / have-org-role-91
+                              :ARG2 (p3 / president))))
+            :ARG1 (s / something)))
+KO
+Bos semantics:
+∃a(and(a)
+   ∧ ∃n(need-01(n)
+        ∧ ∃b(become-01(b)
+             ∧ ∃p2(person(p2)
+                   ∧ ∃h(have-org-role-91(h)
+                        ∧ ∃p3(president(p3)
+                              ∧ :ARG2(h,p3))
+                        ∧ :ARG1(h,p2))
+                   ∧ :ARG2(b,p2))
+             ∧ :ARG0(n,b))
+          ∧ ∃s(something(s)
+               ∧ :ARG1(n,s))
+        ∧ :op2(a,n)))
+--
+Venant semantics
+∃s(something(s)
+   ∧ ∃p2(person(p2)
+         ∧ ∃p3(president(p3)
+               ∧ ∃h(have-org-role-91(h)
+                    ∧ :ARG2(h,p3)
+                      ∧ :ARG1(h,p2)
+                        ∧ ∃b(become-01(b)
+                             ∧ :ARG2(b,p2)
+                               ∧ ∃n(need-01(n)
+                                    ∧ :ARG0(n,b)
+                                      ∧ :ARG1(n,s)
+                                        ∧ ∃a(and(a)
+                                             ∧ :op2(a,n))))))))
+--- venant-AMR-annex-3:the small town in Ivanovo in Moscow to the northeast about 250 kilometres is Teikovo
+(t / town
+       :mod (s / small)
+       :location (p / province 
+           :wiki "Ivanovo"
+           :name (n / name 
+               :op1 "Ivanovo"))
+       :location (r / relative-position
+           :op1 (c / city 
+               :wiki "Moscow"
+               :name (n2 / name 
+                   :op1 "Moscow"))
+           :direction (n3 / northeast)
+           :quant (a / about
+               :op1 (d / distance-quantity 
+                   :quant 250
+                   :unit (k / kilometre))))
+       :domain (c2 / city 
+           :wiki "Teykovo"
+           :name (n4 / name 
+               :op1 "Teikovo")))
+KO
+Bos semantics:
+∃t(town(t)
+   ∧ ∃s(small(s)
+        ∧ :mod(t,s))
+     ∧ ∃p(province(p)
+          ∧ :wiki(p,"Ivanovo")
+            ∧ ∃n(name(n)
+                 ∧ :op1(n,"Ivanovo")
+                 ∧ :name(p,n))
+          ∧ :location(t,p))
+       ∧ ∃r(relative-position(r)
+            ∧ ∃c(city(c)
+                 ∧ :wiki(c,"Moscow")
+                   ∧ ∃n2(name(n2)
+                         ∧ :op1(n2,"Moscow")
+                         ∧ :name(c,n2))
+                 ∧ :op1(r,c))
+              ∧ ∃n3(northeast(n3)
+                    ∧ :direction(r,n3))
+                ∧ ∃a(about(a)
+                     ∧ ∃d(distance-quantity(d)
+                          ∧ :quant(d,250)
+                            ∧ ∃k(kilometre(k)
+                                 ∧ :unit(d,k))
+                          ∧ :op1(a,d))
+                     ∧ :quant(r,a))
+            ∧ :location(t,r))
+         ∧ ∃c2(city(c2)
+               ∧ :wiki(c2,"Teykovo")
+                 ∧ ∃n4(name(n4)
+                       ∧ :op1(n4,"Teikovo")
+                       ∧ :name(c2,n4))
+               ∧ :domain(t,c2)))
+--
+Venant semantics
+∃n4(name(n4)
+    ∧ :op1(n4,"Teikovo")
+      ∧ ∃c2(city(c2)
+            ∧ :wiki(c2,"Teykovo")
+              ∧ :name(c2,n4)
+                ∧ ∃k(kilometre(k)
+                     ∧ ∃d(distance-quantity(d)
+                          ∧ :quant(d,250)
+                            ∧ :unit(d,k)
+                              ∧ ∃a(about(a)
+                                   ∧ :op1(a,d)
+                                     ∧ ∃n3(northeast(n3)
+                                           ∧ ∃n2(name(n2)
+                                                 ∧ :op1(n2,"Moscow")
+                                                   ∧ ∃c(city(c)
+                                                        ∧ :wiki(c,"Moscow")
+                                                          ∧ :name(c,n2)
+                                                            ∧ ∃r(relative-position(r)
+                                                                 ∧ :op1(r,c)
+                                                                   ∧ :direction(r,n3)
+                                                                     ∧ :quant(r,a)
+                                                                       ∧ ∃n(name(n)
+                                                                            ∧ :op1(n,"Ivanovo")
+                                                                              ∧ ∃p(province(p)
+                                                                                   ∧ :wiki(p,"Ivanovo")
+                                                                                     ∧ :name(p,n)
+                                                                                       ∧ ∃s(small(s)
+                                                                                            ∧ ∃t(town(t)
+                                                                                                 ∧ :mod(t,s)
+                                                                                                   ∧ :location(t,p)
+                                                                                                     ∧ :location(t,r)
+                                                                                                       ∧ :domain(t,c2))))))))))))))
+*** 18 AMRs processed ***
+true.
+
+?- 
